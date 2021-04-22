@@ -8,19 +8,14 @@ function useEmailHooks() {
 
 	function handleEmailOnChange(e) {
 		let inputValue = e.target.value;
-		let inputName = e.target.name;
 		setInput(inputValue);
 
-		let errorMessage;
-
-		if (inputName === "E-mail") {
-			if (isEmail(inputValue)) {
-				return true;
-			} else {
-				return false;
-			}
+		if (isEmail(inputValue)) {
+			setInputError(false);
+			setErrorMessage("");
 		} else {
-			errorMessage = `${inputName} is in the wrong format.`;
+			setInputError(true);
+			setErrorMessage("please enter a valid email");
 		}
 	}
 

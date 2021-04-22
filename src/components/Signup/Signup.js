@@ -14,6 +14,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 
 import useInputHooks from "../hooks/useInputHooks";
 import useEmailHooks from "../hooks/useEmailHooks";
+import usePasswordHooks from "../hooks/usePasswordHooks";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -26,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 function Signup() {
 	const classes = useStyles();
 
+	const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
 	// const [email, setEmail] = useState("");
 
 	// const [username, setUsername] = useState("");
@@ -33,6 +36,13 @@ function Signup() {
 	// const [lastName, setLastName] = useState("");
 
 	// const [password, setPassword] = useState("");
+
+	const [
+		password,
+		setPassword,
+		inputPasswordError,
+		errorPasswordMessage,
+	] = usePasswordHooks();
 
 	const [email, setEmail, inputEmailError, errorEmailMessage] = useEmailHooks();
 
@@ -55,7 +65,7 @@ function Signup() {
 		errorLastNameMessage,
 	] = useInputHooks();
 
-	const [password, setPassword] = useInputHooks();
+	// const [password, setPassword] = useInputHooks();
 
 	function handleOnSubmit(e) {
 		e.preventDefault();
@@ -66,6 +76,14 @@ function Signup() {
 		// console.log(lastName);
 		// console.log(password);
 	}
+	let errorObj = { username, firstName, lastName, email, password };
+
+	// console.log(password);
+	useEffect(() => {
+		if (!errorObj) {
+			console.log("it works line 82");
+		}
+	}, [errorObj]);
 
 	return (
 		<Grid
@@ -132,19 +150,25 @@ function Signup() {
 						</FormHelperText>
 					</FormControl>
 					<br />
-					{/*<FormControl error={null}>
+					<FormControl error={inputPasswordError}>
 						<InputLabel htmlFor="component-password">Password</InputLabel>
 						<Input
 							type="password"
 							id="component-password"
 							name="password"
 							value={password}
-							onChange={(e) => setPassword(e.target.value)}
+							onChange={(e) => setPassword(e)}
 						/>
-						<FormHelperText id="component-error-text"> </FormHelperText>
-					</FormControl> 
-					<br /> */}
-					<Button variant="contained" color="primary" type="submit">
+						<FormHelperText id="component-error-text">
+							{inputPasswordError && errorPasswordMessage}
+						</FormHelperText>
+					</FormControl>
+					<br />
+					<Button
+						variant="contained"
+						color="primary"
+						type="submit"
+						disabled={isButtonDisabled}>
 						Submit
 					</Button>
 				</form>
